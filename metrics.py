@@ -11,4 +11,5 @@ Evaluation Metrics:
     1. BLEU
     2. Rouge-L
     3. Human-readable
+    4. Flesch Readability Score
 """
