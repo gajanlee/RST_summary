@@ -179,4 +179,3 @@ if __name__ == '__main__':
     sentlist, constlist = reader('test.xml')
     sentlist = combine(sentlist, constlist)
     writer(sentlist, 'test.conll')
-        

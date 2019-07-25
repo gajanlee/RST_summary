@@ -26,5 +26,5 @@ for FNAME in $DATA_PATH/*
 do
     echo $FNAME
     $JAVA_BIN -cp "$CORENLP_DIR/*" edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -file $FNAME
-    /bin/mv $(/usr/bin/basename $FNAME.xml) $DATA_PATH/
+    /bin/mv $(/usr/bin/basename $FNAME.xml) $DATA_PATH/../rst
 done

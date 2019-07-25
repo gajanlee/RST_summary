@@ -32,11 +32,13 @@ class CoreNlpDataset:
         self.rst_parsing()
 
     def generate_features(self):
+        # use java corenlp to generate xml features file
         cmd = f"/bin/sh corenlp.sh {self.java_path} {self.corenlp_path} {self.base_path}"
         print(cmd) 
         os.system(cmd)
     
     def convert_conll(self):
+        # generate conll file
         def extract_content(xml_file):
             sentlist, constlist = reader(xml_file)
             sentlist = combine(sentlist, constlist)
@@ -48,17 +50,19 @@ class CoreNlpDataset:
         list(map(extract_content, xml_files))
 
     def segment(self):
+        # generate merge file
         model_file = "discoseg/pretrained/model.pickle.gz"
         vocab_file = "discoseg/pretrained/vocab.pickle.gz"
         buildedu.main(model_file, vocab_file, self.base_path, self.base_path)
 
     def rst_parsing(self):
+        # generate brackets file
         model_file = "dplp/resources/bc3200.pickle.gz"
         with gzip.open(model_file) as fin:
             print('Load Brown clusters for creating features ...')
             bcvocab = load(fin, encoding='iso-8859-1')
         evalparser(path=self.base_path, report=False, draw=True,
                 bcvocab=bcvocab, withdp=False)
-            
+
 
 CoreNlpDataset().build()
