@@ -76,7 +76,7 @@ def writedoc(doc, fname, wpath):
             line += tok.word + "\t" + tok.lemma + "\t" 
             line += tok.pos + "\t" + tok.deplabel + "\t" 
             line += str(tok.hidx) + "\t" + tok.ner + "\t"
-            line += tok.partialparse + "\t" + str(eduidx) + "\n"
+            line += (tok.partialparse if tok.partialparse is not None else "") + "\t" + str(eduidx) + "\n"
             fout.write(line)
             # Boundary
             if tok.boundary:

@@ -13,7 +13,7 @@ help() {
     echo "Please check your parameters: $@"
 }
 
-if [ $# != 3 ]; then
+if [ $# != 4 ]; then
     help $@
     exit 1
 fi
@@ -21,10 +21,11 @@ fi
 JAVA_BIN=$1
 CORENLP_DIR=$2
 DATA_PATH=$3
+OUTPUT_PATH=$4
 
 for FNAME in $DATA_PATH/*
 do
-    echo $FNAME
+    echo $FNAME "..."
     $JAVA_BIN -cp "$CORENLP_DIR/*" edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse -file $FNAME
-    /bin/mv $(/usr/bin/basename $FNAME.xml) $DATA_PATH/../rst
+    /bin/mv $(/usr/bin/basename $FNAME.xml) $OUTPUT_PATH
 done

@@ -9,28 +9,49 @@
 """
 Evaluation Metrics:
     1. BLEU
-    2. Rouge-L
+    2. Rouge-*
     3. Human-readable
     4. Flesch Readability Score
 """
 
+import textstat
+import re
+import string
 
+from functools import partial
 from nltk import word_tokenize
 from nltk.translate.bleu_score import sentence_bleu
-
-import textstat
+from rouge import Rouge
 
 def tokenize_and_normalize(sentence : str):
     sentence = word_tokenize(sentence)
-    # TODO: Remove the punctuations
+    # Remove the punctuations will influence Flesch score and textrank algorithm.
     return sentence
 
-def belu_score(reference : str, candidate : str):
+def bleu_score(reference : str, candidate : str):
     reference = tokenize_and_normalize(reference)
     candidate = tokenize_and_normalize(candidate)
 
     return sentence_bleu([reference], candidate)
-    
+
+
+def rouge_score(reference, hypothesis, rouge_type : str):
+    rouge = Rouge()
+    scores = rouge.get_scores(hypothesis, reference)
+
+    # rouge-1, rouge-2, rouge-l
+    # "r", "p", "f"
+    #print(scores)
+    return scores[0][f"rouge-{rouge_type}"]["r"]
+
+rouge_1_score = partial(rouge_score, rouge_type="1")
+rouge_2_score = partial(rouge_score, rouge_type="2")
+rouge_l_score = partial(rouge_score, rouge_type="l")
+
+def word_count(sentence : str):
+    sentence = re.sub(f"[{string.punctuation}]+", " ", sentence)
+    return len(list(filter(lambda x: x != "", sentence.split(" "))))
+
 
 def flesch_reading_score(sentence : str):
     """

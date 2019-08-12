@@ -9,5 +9,16 @@
 @Desc    :   None
 '''
 
+import logging
+
+# level: DEBUG / INFO / WARNING / ERROR / CRITICAL
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
+
+
+info_log = logging.info
+
+error_log = logging.error
+
 def is_null_line(line):
     return (line == "\n") or (not line)
